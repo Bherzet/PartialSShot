@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+	This build script is dedicated for developers. If you're an user, who wants
+	to compile snapshot on his own, you should be aware that you must supply
+	your configuration file to data/partialsshot.json (ant build would fail
+	without it). If you don't have your own configuration file yet, just create
+	an empty file there. It'll be copied to dist/ and bin/ directories (for
+	making debugging easier).
+-->
+<project name="PartialSShot" default="default">
+	<!-- ===== PROPERTIES ===== -->
+	<property name="src.dir" location="src" />
+	<property name="build.dir" location="bin" />
+	<property name="dist.dir" location="dist" />
+	<property name="doc.dir" location="doc" />
+	<property name="lib.dir" location="lib" />
+	<!-- data which are part of the application (e.g. graphics) -->
+	<property name="res.dir" location="res" />
+	<!-- data which are necessary for run but shall not be considered a part of the application (config) -->
+	<property name="data.dir" location="data" />
+	<!-- this is a developer's configuration file. It should be excluded from a source-control system. -->
+	<property name="dev.cfg" location="${data.dir}/partialsshot.json" />
+	
+	<!-- ===== INCLUDE EXTERNAL LIBRARIES ===== -->
+	<path id="classpath">
+		<fileset dir="${lib.dir}" includes="*.jar" />
+	</path>
+	
+	<!-- ===== CLEAN: DELETE THE PREVIOUS BUILDS ===== -->
+	<target name="clean">
+		<delete dir="${build.dir}" />
+		<delete dir="${dist.dir}" />
+		<delete dir="${doc.dir}" />
+	</target>
+	
+	<!-- ===== MAKEDIRS: CREATE DIRECTORIES FOR THE BUILD ===== -->
+	<target name="makedirs" depends="clean">
+		<mkdir dir="${build.dir}" />
+		<mkdir dir="${dist.dir}" />
+		<mkdir dir="${doc.dir}" />
+	</target>
+	
+	<!-- ===== PROPERTIES ===== -->
+	<target name="compile" depends="makedirs">
+		<javac srcdir="${src.dir}" destdir="${build.dir}" includeantruntime="true">
+			<classpath refid="classpath" />
+		</javac>
+		
+		<copy file="${dev.cfg}" tofile="bin/partialsshot.json" />
+	</target>
+	
+	<!-- ===== DOC: GENERATE DOCUMENTATION ===== -->
+	<target name="doc" depends="compile">
+		<javadoc sourcepath="${src.dir}" destdir="${doc.dir}">
+			<classpath>
+				<fileset dir="${lib.dir}">
+					<include name="*.jar" />
+				</fileset>
+			</classpath>
+		</javadoc>
+	</target>
+
+	<!-- ===== JAR: GENERATE JAR FILES ===== -->
+	<target name="jar" depends="compile">
+		<jar basedir="${build.dir}" destfile="${dist.dir}/PartialSShot.jar" excludes="partialsshot.json">
+			<zipgroupfileset includes="*.jar" dir="${lib.dir}" />
+			<zipfileset dir="${res.dir}" prefix="res/" />
+			<zipfileset file="${data.dir}/default_config.json" prefix="res/" />
+			<manifest>
+				<attribute name="Main-Class" value="cz.tzima.partialsshot.PartialSShot" />
+			</manifest>
+		</jar>
+		<copy file="${dev.cfg}" tofile="${dist.dir}/partialsshot.json" />
+	</target>
+	
+	<!-- ===== DEFAULT: BUILDS THE JAR AND THE DOCUMENTATION ===== -->
+	<target name="default" depends="compile, jar, doc">
+	</target>
+</project>

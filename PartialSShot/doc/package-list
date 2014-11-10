@@ -1,0 +1,7 @@
+cz.tzima.partialsshot
+cz.tzima.partialsshot.camera
+cz.tzima.partialsshot.controller
+cz.tzima.partialsshot.controller.messages
+cz.tzima.partialsshot.publishing
+cz.tzima.partialsshot.publishing.dropbox
+cz.tzima.partialsshot.publishing.local
