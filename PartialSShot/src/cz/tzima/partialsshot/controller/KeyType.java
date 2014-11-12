@@ -18,7 +18,8 @@ public enum KeyType {
 	ALT_R   (NativeKeyEvent.VC_ALT_R),
 	SHIFT_L (NativeKeyEvent.VC_SHIFT_L),
 	SHIFT_R (NativeKeyEvent.VC_SHIFT_R),
-	PRTSCR  (NativeKeyEvent.VC_PRINTSCREEN);
+	PRTSCR  (NativeKeyEvent.VC_PRINTSCREEN),
+	ESC     (NativeKeyEvent.VC_ESCAPE);
 	
 	/** Value of the key from {@link NativeKeyEvent}. */
 	private int nativeKeyCode;

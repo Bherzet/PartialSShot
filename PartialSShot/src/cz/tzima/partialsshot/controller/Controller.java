@@ -102,8 +102,21 @@ public final class Controller implements NativeKeyListener, NativeMouseListener,
 
 		// trigger action if shortcut is pressed 
 		if (isShortcutPressed(new KeyType[]{KeyType.CTRL_L, KeyType.SHIFT_L, KeyType.PRTSCR})) {
-			System.out.println("PRESSED");
 			this.switchState();
+		} else if (isShortcutPressed(new KeyType[]{KeyType.ESC})) {
+			this.currentState = new StateMessageDefault();
+			this.points.clear();
+			reportStateChange();
+		}
+	}
+
+	/**
+	 * This method should be called each time a state changed. It will try to
+	 * invoke a listener (if it has been registered).
+	 */
+	private void reportStateChange() {
+		if (this.onStateChangeListener != null) {
+			this.onStateChangeListener.stateChanged(currentState);
 		}
 	}
 
@@ -206,9 +219,7 @@ public final class Controller implements NativeKeyListener, NativeMouseListener,
 				break;
 		}
 
-		if (this.onStateChangeListener != null) {
-			this.onStateChangeListener.stateChanged(currentState);
-		}
+		reportStateChange();
 	}
 
 	/**
