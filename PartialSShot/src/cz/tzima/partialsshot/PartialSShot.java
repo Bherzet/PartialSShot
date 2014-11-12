@@ -375,17 +375,18 @@ public class PartialSShot extends JFrame implements OnStateChangeListener, OnScr
 		// if the application is executed from the JAR file, this would be file.
 		// Otherwise it should be a directory.
 		String executionPath = PartialSShot.class.getProtectionDomain().getCodeSource().getLocation().toExternalForm();
-		int    protocol      = executionPath.lastIndexOf(':');
-		
+		int    protocol      = executionPath.indexOf(':');
+
 		// if there's a protocol, cut it off
 		if (protocol != -1) {
 			executionPath = executionPath.substring(protocol + 1);
 		}
-		
+
 		// cut off the filename and return just directory
 		File file = new File(executionPath);
 		if (file.isFile()) {
-			return executionPath.substring(0, executionPath.lastIndexOf(File.separatorChar));
+			// don't use File.separatorChar - executionPath contains '/' on Windows too!
+			return executionPath.substring(0, executionPath.lastIndexOf('/'));
 		}
 		
 		// it's already just a directory, return it
