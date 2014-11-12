@@ -243,6 +243,7 @@ public class PartialSShot extends JFrame implements OnStateChangeListener, OnScr
 			}});
 		}});
 
+		trayIcon.setImageAutoSize(true);
 		SystemTray.getSystemTray().add(trayIcon);
 	}
 	
