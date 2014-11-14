@@ -306,19 +306,9 @@ public class PartialSShot extends JFrame implements OnStateChangeListener, OnScr
 		try {
 			// take a screenshot
 			BufferedImage screenshot = camera.takeScreenshot(points);
-			
-			// publish it using all loaded content publishers
-			for (ContentPublisher contentPublisher : contentPublishers) {
-				try {
-					contentPublisher.publish(screenshot);
-				} catch (ContentPublishingException exception) {
-					logger.log(
-						Level.WARNING,
-						"Screenshot couldn't be published via " + contentPublisher.getType(),
-						exception
-					);
-				}
-			}
+
+			// publish using all required content publishers
+			publish(screenshot);
 			
 			// generate link from one content publisher (specified in the configuration)
 			copyLinkToClipboard();
@@ -343,6 +333,27 @@ public class PartialSShot extends JFrame implements OnStateChangeListener, OnScr
 				
 				exception
 			);
+		}
+	}
+
+	/**
+	 * Publishes the screenshot using all required content publishers.
+	 * 
+	 * @param screenshot
+	 *     Image of the screenshot.
+	 */
+	private void publish(BufferedImage screenshot) {
+		// publish it using all loaded content publishers
+		for (ContentPublisher contentPublisher : contentPublishers) {
+			try {
+				contentPublisher.publish(screenshot);
+			} catch (ContentPublishingException exception) {
+				logger.log(
+					Level.WARNING,
+					"Screenshot couldn't be published via " + contentPublisher.getType(),
+					exception
+				);
+			}
 		}
 	}
 
