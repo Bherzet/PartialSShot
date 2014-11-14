@@ -9,9 +9,10 @@ public class IconsManager {
 	/**
 	 * Path to all the icons. There must be at least three files (but other ones
 	 * would be ignored). First icon is the default state, second icon is when
-	 * application is activated, third icon is when the first point is selected.
+	 * application is activated, third icon is when the first point is selected
+	 * and fourth icon signalizes running upload.
 	 */
-	private static final String[] iconNames = {"res/logo.png", "res/logo-0.png", "res/logo-1.png"};
+	private static final String[] iconNames = {"res/logo.png", "res/logo-0.png", "res/logo-1.png", "res/logo-U.png"};
 	
 	/**
 	 * All icons. The order is the same as for names ({@link #iconNames}).
@@ -54,6 +55,11 @@ public class IconsManager {
 			case ACTIVATED:
 				return icons[1];
 
+			// upload is running (application should ignore new screenshot
+			// requests)
+			case UPLOADING:
+				return icons[3];
+				
 			// for the future updates, which may add plugins supporting more
 			// selection of more than two points, it'd be good to add more icons
 			// and this code replace with something like:
