@@ -18,7 +18,9 @@ public enum PublisherType {
 	/** Related to the {@link DropboxContentPublisher}. */
 	DROPBOX (DropboxContentPublisher.class),
 	/** Related to the {@link LocalContentPublisher}. */
-	LOCAL   (LocalContentPublisher.class);
+	LOCAL   (LocalContentPublisher.class),
+	/** Modified {@link DropboxContentPublisher} - for testing purposes only! */
+	TESTING (TestingPublisher.class);
 
 	/** Implementation of the {@link ContentPublisher}. */
 	private Class<? extends ContentPublisher> contentPublisherType;
