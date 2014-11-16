@@ -39,5 +39,13 @@ public enum StateType {
 	 * 
 	 * @see StateMessageNthCornerSelected
 	 */
-	Nth_CORNER_SELECTED
+	Nth_CORNER_SELECTED,
+	
+	/**
+	 * Upload is currently running. This state is similar to {@code #DEFAULT},
+	 * but it should be "frozen" (making another screenshot, while the first one
+	 * is being uploaded, doesn't make sense - because of copying links to the
+	 * clipboard, user could lose some links).
+	 */
+	UPLOADING
 }

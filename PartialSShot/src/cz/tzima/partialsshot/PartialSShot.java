@@ -42,8 +42,9 @@ import cz.tzima.partialsshot.controller.OnStateChangeListener;
 import cz.tzima.partialsshot.controller.messages.StateMessage;
 import cz.tzima.partialsshot.publishing.ContentPublisher;
 import cz.tzima.partialsshot.publishing.ContentPublisherInitializationException;
-import cz.tzima.partialsshot.publishing.ContentPublishingException;
 import cz.tzima.partialsshot.publishing.PublisherType;
+import cz.tzima.partialsshot.uploader.OnUploadProgressListener;
+import cz.tzima.partialsshot.uploader.Uploader;
 
 /**
  * <p>PartialSShot is an application for quick taking of screenshots, uploading
@@ -54,7 +55,7 @@ import cz.tzima.partialsshot.publishing.PublisherType;
  * @author Tomas Zima
  */
 @SuppressWarnings("serial")
-public class PartialSShot extends JFrame implements OnStateChangeListener, OnScreenshotRequestListener {
+public class PartialSShot extends JFrame implements OnStateChangeListener, OnScreenshotRequestListener, OnUploadProgressListener {
 	// -- error handling
 	/** Logger for {@link PartialSShot}. */
 	private static final Logger logger = Logger.getLogger(PartialSShot.class.getName());
@@ -91,6 +92,10 @@ public class PartialSShot extends JFrame implements OnStateChangeListener, OnScr
 	private Camera camera = null;
 	/** All loaded content publishers. Screenshots will be published using each one. */
 	private ContentPublisher[] contentPublishers;
+	/** When upload is executed, this list is going to be filled with content publishers which finished. */
+	private volatile int finishedUploadsCount = 0;
+	/** Count of publishers which failed during current upload. */
+	private volatile int failedUploadsCount = 0;
 	
 	/**
 	 * Initializes and executes the application.
@@ -306,22 +311,9 @@ public class PartialSShot extends JFrame implements OnStateChangeListener, OnScr
 		try {
 			// take a screenshot
 			BufferedImage screenshot = camera.takeScreenshot(points);
-			
-			// publish it using all loaded content publishers
-			for (ContentPublisher contentPublisher : contentPublishers) {
-				try {
-					contentPublisher.publish(screenshot);
-				} catch (ContentPublishingException exception) {
-					logger.log(
-						Level.WARNING,
-						"Screenshot couldn't be published via " + contentPublisher.getType(),
-						exception
-					);
-				}
-			}
-			
-			// generate link from one content publisher (specified in the configuration)
-			copyLinkToClipboard();
+
+			// publish using all required content publishers
+			publish(screenshot);
 		} catch (CameraActionException exception) {
 			// this is most likely application's fault
 			logger.log(
@@ -343,6 +335,48 @@ public class PartialSShot extends JFrame implements OnStateChangeListener, OnScr
 				
 				exception
 			);
+		}
+	}
+	
+	/**
+	 * Called after upload from a specific content publisher has finished. It
+	 * will check if that was a last running upload and if so, it will try to
+	 * generate a link. 
+	 */
+	@Override
+	public synchronized void onUploadFinished(ContentPublisher contentPublisher, Throwable failure) {
+		if (failure == null) {
+			// increase count of sucesfully finished uploads
+			this.finishedUploadsCount++;
+			logger.log(Level.INFO, "ContentPublisher {0} has finished.", contentPublisher.getType());
+		} else {
+			// increase count of uploads finished with fail
+			this.failedUploadsCount++;
+			logger.log(Level.WARNING, "Uploading through " + contentPublisher.getType() + " has failed.", failure);
+		}
+
+		// if this was the last upload, generate a link
+		if (this.finishedUploadsCount == (contentPublishers.length - this.failedUploadsCount)) {
+			copyLinkToClipboard();
+		}
+		
+		// clean
+		this.finishedUploadsCount = 0;
+		this.failedUploadsCount   = 0;
+	}
+
+	/**
+	 * Publishes the screenshot using all required content publishers.
+	 * 
+	 * @param screenshot
+	 *     Image of the screenshot.
+	 */
+	private void publish(BufferedImage screenshot) {
+		// publish it using all loaded content publishers
+		for (ContentPublisher contentPublisher : contentPublishers) {
+			Uploader uploader = new Uploader(contentPublisher, screenshot);
+			uploader.setOnUploadProgressListener(this);
+			uploader.start();
 		}
 	}
 
@@ -448,9 +482,9 @@ public class PartialSShot extends JFrame implements OnStateChangeListener, OnScr
 	 */
 	public static void main(String[] args) {
 		try {
-			// disable jNativeHook's logger
+			// disable jNativeHook's logger (sometimes doesn't work)
 			Logger.getLogger(GlobalScreen.class.getPackage().getName()).setLevel(Level.OFF);
-	//		System.err.close(); // not so wise but works
+	//		System.err.close(); // not so wise but works always
 			
 			// enable logging (logger receives everything, everything will be logged
 			// to the file, warnings and higher will be displayed to the user)

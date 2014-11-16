@@ -5,3 +5,4 @@ cz.tzima.partialsshot.controller.messages
 cz.tzima.partialsshot.publishing
 cz.tzima.partialsshot.publishing.dropbox
 cz.tzima.partialsshot.publishing.local
+cz.tzima.partialsshot.uploader
