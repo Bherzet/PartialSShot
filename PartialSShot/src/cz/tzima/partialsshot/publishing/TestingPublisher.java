@@ -40,4 +40,12 @@ public class TestingPublisher extends DropboxContentPublisher {
 		
 		super.publish(image, name);
 	}
+	
+	/**
+	 * @return {@link PublisherType#TESTING}.
+	 */
+	@Override
+	public PublisherType getType() {
+		return PublisherType.TESTING;
+	}
 }
