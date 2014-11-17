@@ -93,6 +93,8 @@ The current version supports just two content publishers: *DROPBOX* and *LOCAL*.
 PartialSShot, you definitely want to use it together with Dropbox. *LOCAL* content publisher just places screenshots
 in the local directory.
 
+**Hint**: Don't use a single backslash character (`\`) in paths! Always use a normal slash (`/`) or a double backslash (`\\` - which is equivalent to a `\`). Don't mind me, don't mind JSON, mind Microsoft. These are the guys who came up with an idea of using `\` whilst much older UNIX used `/`. In C, which existed way too earlier than Microsoft was established, backslash (`\`) has been used for escaping (writing special characters). I believe Microsoft needed something different than `/` so they came up with `\` and fucked up everything.
+
 ## Taking a screenshot
 *This assumes you've PartialSShot running and with Dropbox configured. You should see the icon in tray.*
 
