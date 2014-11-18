@@ -93,7 +93,12 @@ The current version supports just two content publishers: *DROPBOX* and *LOCAL*.
 PartialSShot, you definitely want to use it together with Dropbox. *LOCAL* content publisher just places screenshots
 in the local directory.
 
-**Hint**: Don't use a single backslash character (`\`) in paths! Always use a normal slash (`/`) or a double backslash (`\\` - which is equivalent to a `\`). Don't mind me, don't mind JSON, mind Microsoft. These are the guys who came up with an idea of using `\` whilst much older UNIX used `/`. In C, which existed way too earlier than Microsoft was established, backslash (`\`) has been used for escaping (writing special characters). I believe Microsoft needed something different than `/` so they came up with `\` and fucked up everything. Backslash (`\`) is still used for escaping in every conventional programming language (Java, C/C++, JavaScript, C# **too**) and because of that fucking idea to use `\` in paths, you've to write double-backslash (`\\`) everywhere.
+**Hint for Windows users**: Don't use a single backslash character (`\`) in paths! Always use a normal slash (`/`) or a double backslash (`\\` - which is equivalent to a `\`). Don't mind me, don't mind JSON, mind Microsoft. These are the guys who came up with an idea of using `\` whilst much older UNIX used `/`. In C, which existed way too earlier than Microsoft was established, backslash (`\`) has been used for escaping (writing special characters). I believe Microsoft needed something different than `/` so they came up with `\` and fucked up everything. Backslash (`\`) is still used for escaping in every conventional programming language (Java, C/C++, JavaScript, C# **too**) and because of that fucking idea to use `\` in paths, you've to write double-backslash (`\\`) everywhere.
+
+**Hint for Dropbox users**: Do you have troubles with setting up URL and user ID? It's pretty easy, actually. Open your Dropbox client, go to the directory called Public and choose any file located in there (if there isn't one, just create it). Then open context menu of that file (using right mouse button) and select `Dropbox -> Copy public`. Now copy this link somewhere. Lets say you've got something like this: `https://dl.dropboxusercontent.com/u/12345678/test.txt`. In this case, `12345678` is your user ID and format of the link is `https://dl.dropboxusercontent.com/u/%USER_ID%/`. It wasn't that terrible, right?
+
+
+
 
 ## Taking a screenshot
 *This assumes you've PartialSShot running and with Dropbox configured. You should see the icon in tray.*
