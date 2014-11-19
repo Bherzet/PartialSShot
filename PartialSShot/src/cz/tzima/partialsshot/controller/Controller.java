@@ -104,9 +104,11 @@ public final class Controller implements NativeKeyListener, NativeMouseListener,
 		if (isShortcutPressed(new KeyType[]{KeyType.CTRL_L, KeyType.SHIFT_L, KeyType.PRTSCR})) {
 			this.switchState();
 		} else if (isShortcutPressed(new KeyType[]{KeyType.ESC})) {
-			this.currentState = new StateMessageDefault();
-			this.points.clear();
-			reportStateChange();
+			if (this.currentState.getStateType() != StateType.DEFAULT) {
+				this.currentState = new StateMessageDefault();
+				this.points.clear();
+				reportStateChange();
+			}
 		}
 	}
 
