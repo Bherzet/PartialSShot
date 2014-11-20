@@ -20,6 +20,8 @@
 	<property name="data.dir" location="data" />
 	<!-- this is a developer's configuration file. It should be excluded from a source-control system. -->
 	<property name="dev.cfg" location="${data.dir}/partialsshot.json" />
+	<!-- number of version (will be part of name of the generated JAR file). -->
+	<property name="version" value="1.0.1" />
 	
 	<!-- ===== INCLUDE EXTERNAL LIBRARIES ===== -->
 	<path id="classpath">
@@ -41,7 +43,7 @@
 	</target>
 	
 	<!-- ===== PROPERTIES ===== -->
-	<target name="compile" depends="makedirs">
+	<target name="compile">
 		<javac srcdir="${src.dir}" destdir="${build.dir}" includeantruntime="true">
 			<classpath refid="classpath" />
 		</javac>
@@ -62,7 +64,7 @@
 
 	<!-- ===== JAR: GENERATE JAR FILES ===== -->
 	<target name="jar" depends="compile">
-		<jar basedir="${build.dir}" destfile="${dist.dir}/PartialSShot.jar" excludes="partialsshot.json">
+		<jar basedir="${build.dir}" destfile="${dist.dir}/PartialSShot-${version}.jar" excludes="partialsshot.json">
 			<zipgroupfileset includes="*.jar" dir="${lib.dir}" />
 			<zipfileset dir="${res.dir}" prefix="res/" />
 			<zipfileset file="${data.dir}/default_config.json" prefix="res/" />
