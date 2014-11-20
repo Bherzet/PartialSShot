@@ -9,7 +9,9 @@ PartialSShot allows you to take a screenshot just by hitting a special shortcut 
 points on the monitor. It will automatically take a screenshot, upload it and copy the link to clipboard.
 
 ## Download
-Download [PartialSShot.jar (1.6 MB)](https://github.com/tzima/PartialSShot/blob/master/PartialSShot/dist/PartialSShot.jar?raw=true).
+Download [PartialSShot-1.0.0.jar (1.6 MB)](https://github.com/tzima/PartialSShot/blob/master/PartialSShot/dist/PartialSShot-1.0.0.jar?raw=true).
+
+Download [PartialSShot-1.0.1.jar (1.6 MB)](https://github.com/tzima/PartialSShot/blob/master/PartialSShot/dist/PartialSShot-1.0.1.jar?raw=true).
 
 ## Install
 You don't need to install anything. Just place the JAR file into some directory (preferably a new one because application
