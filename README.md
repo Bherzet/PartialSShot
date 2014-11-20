@@ -13,6 +13,16 @@ Download [PartialSShot-1.0.0.jar (1.6 MB)](https://github.com/tzima/PartialSShot
 
 Download [PartialSShot-1.0.1.jar (1.6 MB)](https://github.com/tzima/PartialSShot/blob/master/PartialSShot/dist/PartialSShot-1.0.1.jar?raw=true).
 
+### Versioning strategy
+Version names are created in the pattern `<major>.<minor>.<patch>`, where:
+  - `patch` is increased by one for each bugfix
+  - `minor` is increased by one for each feature added
+  - `major` is increased by one as soon as `minor` would be bigger than 9 otherwise
+
+When one number is increased, all lower ones are set to zero. For example when `minor` would be increased, `patch` would be set to zero.
+
+Any backward **compatibility isn't granted** as a matter of principle - it's just an ordinary application for common users. If this happens to be an issue (e.g. you're developing some tool which is using or depending on PartialSShot), let me know about that (preferably by opening issue right here on GitHub).
+
 ## Install
 You don't need to install anything. Just place the JAR file into some directory (preferably a new one because application
 will store configuration and log files there).
